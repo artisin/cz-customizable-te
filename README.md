@@ -1,4 +1,4 @@
-# cz-customizable
+# cz-customizable-te
 
 __NOTE__: Same as [cz-customizable](https://github.com/leonardoanalista/cz-customizable), but with the commit tailored to my liking and to jive with [waffle.io](https://waffle.io).
 
