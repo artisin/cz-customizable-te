@@ -89,13 +89,13 @@ describe('cz-customizable', function() {
       subject: 'create a new cool feature',
       body: '-line1|-line2',
       breaking: 'breaking',
-      footer: '#pr-1'
+      footer: '#1'
     };
 
     var mockCz = getMockedCz(answers);
     module.prompter(mockCz, commit);
 
-    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature → #pr-1\n\n-line1\n-line2\n\nBREAKING CHANGE:\nbreaking\n\nCLOSES #pr-1');
+    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature → #1\n\n-line1\n-line2\n\nBREAKING CHANGE:\nbreaking\n\nCLOSES #1');
   });
 
   it('should call commit() function with commit message with the minimal required fields', function() {
