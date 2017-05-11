@@ -89,13 +89,13 @@ describe('cz-customizable', function() {
       subject: 'create a new cool feature',
       body: '-line1|-line2',
       breaking: 'breaking',
-      footer: 'my footer'
+      footer: '#pr-1'
     };
 
     var mockCz = getMockedCz(answers);
     module.prompter(mockCz, commit);
 
-    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature\n\n-line1\n-line2\n\nBREAKING CHANGE:\nbreaking\n\nCLOSES my footer');
+    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature → #pr-1\n\n-line1\n-line2\n\nBREAKING CHANGE:\nbreaking\n\nCLOSES #pr-1');
   });
 
   it('should call commit() function with commit message with the minimal required fields', function() {
@@ -180,7 +180,7 @@ describe('cz-customizable', function() {
     var firstPart = 'feat(myScope): ';
 
     var firstLine = commit.mostRecentCall.args[0].split('\n\n')[0];
-    expect(firstLine).toEqual(firstPart + answers.subject.slice(0, 100 - firstPart.length));
+    expect(firstLine).toEqual(firstPart + answers.subject.slice(0, 70 - firstPart.length));
 
     //it should wrap body
     var body = commit.mostRecentCall.args[0].split('\n\n')[1];
