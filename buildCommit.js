@@ -3,10 +3,9 @@
 
 var wrap = require('word-wrap');
 
-
 module.exports = function buildCommit(answers) {
 
-  var maxLineWidth = 100;
+  var maxLineWidth = 70;
 
   var wrapOptions = {
     trim: true,
@@ -39,6 +38,10 @@ module.exports = function buildCommit(answers) {
 
   // Hard limit this line
   var head = (answers.type + addScope(answers.scope) + addSubject(answers.subject)).slice(0, maxLineWidth);
+  console.log(answers.footer)
+  if (answers.footer && answers.footer.length && answers.footer.length < 10) {
+    head += answers.footer && answers.footer.includes('#') ? ` → ${answers.footer}` : ` → #${answers.footer}`;
+  }
 
   // Wrap these lines at 100 characters
   var body = wrap(answers.body, wrapOptions) || '';
