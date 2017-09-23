@@ -89,13 +89,13 @@ describe('cz-customizable', function() {
       subject: 'create a new cool feature',
       body: '-line1|-line2',
       breaking: 'breaking',
-      footer: '#1'
+      footer: '#1, #2'
     };
 
     var mockCz = getMockedCz(answers);
     module.prompter(mockCz, commit);
 
-    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature → #1\n\n-line1\n-line2\n\nBREAKING CHANGE:\nbreaking\n\nCLOSES #1');
+    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature → #1, #2\n\n-line1\n-line2\n\nBREAKING CHANGE:\nbreaking\n\nCLOSES #1, CLOSES #2');
   });
 
   it('should call commit() function with commit message with the minimal required fields', function() {
@@ -178,7 +178,6 @@ describe('cz-customizable', function() {
     module.prompter(mockCz, commit);
 
     var firstPart = 'feat(myScope): ';
-
     var firstLine = commit.mostRecentCall.args[0].split('\n\n')[0];
     expect(firstLine).toEqual(firstPart + answers.subject.slice(0, 70 - firstPart.length));
 
@@ -191,5 +190,78 @@ describe('cz-customizable', function() {
     expect(footer).toEqual('CLOSES ' + footerChars_100 + '\nfooter-second-line');
 
   });
+
+  it('should call commit() function with custom breaking prefix', function() {
+    var answers = {
+      confirmCommit: 'yes',
+      type: 'feat',
+      scope: 'myScope',
+      subject: 'create a new cool feature → #my footer',
+      breaking: 'breaking',
+      footer: '#my footer'
+    };
+    
+    module.__set__({
+      // it mocks winston logging tool
+      log: {
+        info: function() {}
+      },
+
+      readConfigFile: function() {
+        return {
+          types: [{value: 'feat', name: 'feat: my feat → #my footer'}],
+          scopes: [{name: 'myScope'}],
+          scopeOverrides: {
+            fix: [{name: 'fixOverride'}]
+          },
+          allowCustomScopes: true,
+          allowBreakingChanges: ['feat'],
+          breakingPrefix: 'WARNING:'
+        };
+      }
+    });
+
+    var mockCz = getMockedCz(answers);
+    module.prompter(mockCz, commit);
+
+    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature → #my footer\n\n\BREAKING CHANGE:\nbreaking\n\nCLOSES #my footer');
+  });
+
+  it('should call commit() function with custom footer prefix', function() {
+    var answers = {
+      confirmCommit: 'yes',
+      type: 'feat',
+      scope: 'myScope',
+      subject: 'create a new cool feature',
+      breaking: 'breaking',
+      footer: '#1'
+    };
+    
+    module.__set__({
+      // it mocks winston logging tool
+      log: {
+        info: function() {}
+      },
+
+      readConfigFile: function() {
+        return {
+          types: [{value: 'feat', name: 'feat: my feat → #1'}],
+          scopes: [{name: 'myScope'}],
+          scopeOverrides: {
+            fix: [{name: 'fixOverride'}]
+          },
+          allowCustomScopes: true,
+          allowBreakingChanges: ['feat'],
+          footerPrefix: 'FIXES:'
+        };
+      }
+    });
+
+    var mockCz = getMockedCz(answers);
+    module.prompter(mockCz, commit);
+    debugger
+    expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature → #1\n\nBREAKING CHANGE:\nbreaking\n\nFIXES: #1');
+  });
+
 
 });

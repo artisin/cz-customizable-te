@@ -3,7 +3,7 @@
 
 var wrap = require('word-wrap');
 
-module.exports = function buildCommit(answers) {
+module.exports = function buildCommit(answers, config) {
 
   var maxLineWidth = 70;
 
@@ -57,8 +57,19 @@ module.exports = function buildCommit(answers) {
   if (breaking) {
     result += '\n\n' + 'BREAKING CHANGE:\n' + breaking;
   }
-  if (footer) {
-    result += '\n\nCLOSES ' + footer;
+  //builds close isses -> CLOSES XX, CLOSES XX,
+  if (footer && typeof footer === 'string') {
+    var footerPrefix = config && config.footerPrefix ? config.footerPrefix : 'CLOSES';
+    if (footer.includes(',')) {
+      result += '\n\n';
+      footer.split(',').forEach(function (val) {
+        result += footerPrefix + ' ' + val.replace(/\s/g, '') + ', ';
+      })
+      //remove last comma, and replace two spaces with single
+      result = result.replace(/,\s$/, '');
+    }else {
+      result += '\n\n' + footerPrefix + ' ' + footer;
+    }
   }
 
   return escapeSpecialChars(result);
