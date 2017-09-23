@@ -259,9 +259,7 @@ describe('cz-customizable', function() {
 
     var mockCz = getMockedCz(answers);
     module.prompter(mockCz, commit);
-    debugger
     expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature → #1\n\nBREAKING CHANGE:\nbreaking\n\nFIXES: #1');
   });
-
 
 });
