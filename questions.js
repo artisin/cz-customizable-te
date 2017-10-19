@@ -97,7 +97,28 @@ module.exports = {
         type: 'input',
         name: 'footer',
         message: 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n',
-        when: isNotWip
+        when: isNotWip || !config.pivotal
+      },
+      {
+        type: 'list',
+        name: 'pivotalTag',
+        message: 'Select the pivotal tag. E.g.: #109683958, #931356741:\n',
+        choices: [
+          {value: 'Finishes', name: 'Finishes: Change specified story to Finished state'},
+          {value: 'Fixes',    name: 'Fixes:    Change specified story to Finished state'},
+          {value: 'Delivers', name: 'Delivers: Change specified story to Delivered state'},
+        ],
+        when: function() {
+          return config.pivotal;
+        }
+      },
+      {
+        type: 'input',
+        name: 'pivotalId',
+        message: 'Enter pivotal story Id:',
+        when: function() {
+          return config.pivotal;
+        }
       },
       {
         type: 'expand',

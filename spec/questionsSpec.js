@@ -70,9 +70,13 @@ describe('cz-customizable', function() {
     expect(getQuestion(7).when({type: 'fix'})).toEqual(true);
     expect(getQuestion(7).when({type: 'WIP'})).toEqual(false);
 
+    // Pivotal
+    expect(getQuestion(8).name).toEqual('pivotalTag');
+    expect(getQuestion(9).name).toEqual('pivotalId');
+
     //question 8, last one, CONFIRM COMMIT OR NOT
-    expect(getQuestion(8).name).toEqual('confirmCommit');
-    expect(getQuestion(8).type).toEqual('expand');
+    expect(getQuestion(10).name).toEqual('confirmCommit');
+    expect(getQuestion(10).type).toEqual('expand');
 
 
     var answers = {
@@ -81,7 +85,7 @@ describe('cz-customizable', function() {
       scope: 'myScope',
       subject: 'create a new cool feature'
     };
-    expect(getQuestion(8).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
+    expect(getQuestion(10).message(answers)).toMatch('Are you sure you want to proceed with the commit above?');
   });
 
 
