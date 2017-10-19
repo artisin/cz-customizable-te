@@ -262,4 +262,64 @@ describe('cz-customizable', function() {
     expect(commit).toHaveBeenCalledWith('feat(myScope): create a new cool feature → #1\n\nBREAKING CHANGE:\nbreaking\n\nFIXES: #1');
   });
 
+  it('Should be able to use Pivotal Tag/Id', function() {
+    var answers = {
+      confirmCommit: 'yes',
+      type: 'feat',
+      scope: 'myScope',
+      subject: 'create a new cool feature',
+      pivotalTag: 'Finishes',
+      pivotalId: '109683958'
+    };
+    module.__set__({
+      // it mocks winston logging tool
+      log: {
+        info: function() {}
+      },
+
+      readConfigFile: function() {
+        return {
+          pivotal: true,
+          types: [{value: 'feat', name: 'feat: my feat → #my footer'}],
+          scopes: [{name: 'myScope'}],
+        };
+      }
+    });
+
+    var mockCz = getMockedCz(answers);
+    module.prompter(mockCz, commit);
+    expect(commit.mostRecentCall.args[0]).toEqual('feat(myScope): create a new cool feature\n\n[Finishes #109683958]')
+  });
+
+  it('Should be able to use multiple Pivotal Story IDs', function() {
+    var answers = {
+      confirmCommit: 'yes',
+      type: 'feat',
+      scope: 'myScope',
+      subject: 'create a new cool feature',
+      pivotalTag: 'Delivers',
+      pivotalId: '109683958, 209683958'
+    };
+    module.__set__({
+      // it mocks winston logging tool
+      log: {
+        info: function() {}
+      },
+
+      readConfigFile: function() {
+        return {
+          pivotal: true,
+          types: [{value: 'feat', name: 'feat: my feat → #my footer'}],
+          scopes: [{name: 'myScope'}],
+        };
+      }
+    });
+    debugger
+    var mockCz = getMockedCz(answers);
+    module.prompter(mockCz, commit);
+    debugger
+    expect(commit.mostRecentCall.args[0]).toEqual('feat(myScope): create a new cool feature\n\n[Delivers #109683958], [Delivers #209683958]')
+  });
+
 });
+

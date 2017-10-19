@@ -38,7 +38,6 @@ module.exports = function buildCommit(answers, config) {
 
   // Hard limit this line
   var head = (answers.type + addScope(answers.scope) + addSubject(answers.subject)).slice(0, maxLineWidth);
-  console.log(answers.footer)
   if (answers.footer && answers.footer.length && answers.footer.length < 10) {
     head += answers.footer && answers.footer.includes('#') ? ` → ${answers.footer}` : ` → #${answers.footer}`;
   }
@@ -57,8 +56,9 @@ module.exports = function buildCommit(answers, config) {
   if (breaking) {
     result += '\n\n' + 'BREAKING CHANGE:\n' + breaking;
   }
+
   //builds close isses -> CLOSES XX, CLOSES XX,
-  if (footer && typeof footer === 'string') {
+  if (footer && typeof footer === 'string' && !answers.pivotalTag) {
     var footerPrefix = config && config.footerPrefix ? config.footerPrefix : 'CLOSES';
     if (footer.includes(',')) {
       result += '\n\n';
@@ -69,6 +69,22 @@ module.exports = function buildCommit(answers, config) {
       result = result.replace(/,\s$/, '');
     }else {
       result += '\n\n' + footerPrefix + ' ' + footer;
+    }
+  }else if (answers.pivotalTag && answers.pivotalId) {
+    var pivotalTag = answers.pivotalTag;
+    var pivotalId = answers.pivotalId;
+    if (pivotalId.includes(',')) {
+      result += '\n\n';
+      pivotalId.split(',').forEach(function (val) {
+        var tag = val.replace(/\s/g, '');
+        tag = tag.includes('#') ? tag : '#' + tag;
+        result += '[' + pivotalTag + ' ' + tag + '], ';
+      })
+      //remove last comma, and replace two spaces with single
+      result = result.replace(/,\s$/, '');
+    }else {
+      pivotalId = pivotalId.includes('#') ? pivotalId : '#' + pivotalId;
+      result += '\n\n' + '[' + pivotalTag + ' ' + pivotalId + ']';
     }
   }
 

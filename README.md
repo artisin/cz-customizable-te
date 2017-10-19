@@ -1,6 +1,6 @@
 # cz-customizable-te
 
-__NOTE__: Same as [cz-customizable](https://github.com/leonardoanalista/cz-customizable), but with the commit tailored to my liking and to jive with [waffle.io](https://waffle.io).
+__NOTE__: Same as [cz-customizable](https://github.com/leonardoanalista/cz-customizable), but with the commit tailored to my liking and to jive with [waffle.io](https://waffle.io). It also includes Pivotal commit syntac.
 
 The customizable Commitizen plugin to help achieve consistent commit messages like the [AngularJS team](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#-git-commit-guidelines).
 
@@ -47,6 +47,20 @@ Note: option one allows you to have your config away from root directory. It als
 From now on, instead of `git commit` you type `git cz` and let the tool do the work for you.
 
 Hopefully this will help you to have consistent commit messages and have a fully automated deployemnt without any human intervention.
+
+## Use Pivotal Commit Syntax, ie `[Finishes #12345689]`:
+* Config block in your `package.json`:
+  ```
+  ...
+  "config": {
+    "cz-customizable": {
+      "config": "config/path/to/my/config.js",
+      "pivotal": true
+    }
+  }
+  ```
+Note: The Footer (closes) question prompts are changed to pivotal specific
+
 
 ## Options
 
