@@ -58,7 +58,7 @@ module.exports = function buildCommit(answers, config) {
   }
 
   //builds close isses -> CLOSES XX, CLOSES XX,
-  if (footer && typeof footer === 'string' && !answers.pivotalTag) {
+  if (footer && typeof footer === 'string') {
     var footerPrefix = config && config.footerPrefix ? config.footerPrefix : 'CLOSES';
     if (footer.includes(',')) {
       result += '\n\n';
@@ -70,9 +70,11 @@ module.exports = function buildCommit(answers, config) {
     }else {
       result += '\n\n' + footerPrefix + ' ' + footer;
     }
-  }else if (answers.pivotalTag && answers.pivotalId) {
-    var pivotalTag = answers.pivotalTag;
-    var pivotalId = answers.pivotalId;
+  }
+
+  var pivotalTag = answers.pivotalTag;
+  var pivotalId = answers.pivotalId;
+  if (pivotalId) {
     if (pivotalId.includes(',')) {
       result += '\n\n';
       pivotalId.split(',').forEach(function (val) {
