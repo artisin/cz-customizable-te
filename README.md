@@ -49,17 +49,14 @@ From now on, instead of `git commit` you type `git cz` and let the tool do the w
 Hopefully this will help you to have consistent commit messages and have a fully automated deployemnt without any human intervention.
 
 ## Use Pivotal Commit Syntax, ie `[Finishes #12345689]`:
-* Config block in your `package.json`:
+* Add to your `.cz-config.js` config:
   ```
-  ...
-  "config": {
-    "cz-customizable": {
-      "config": "config/path/to/my/config.js",
-      "pivotal": true
-    }
+  module.exports = {
+    pivotal: true,
+    ...
   }
   ```
-Note: The Footer (closes) question prompts are changed to pivotal specific
+
 
 
 ## Options
