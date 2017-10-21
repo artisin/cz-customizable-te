@@ -1,3 +1,9 @@
+<a name="6.2.0"></a>
+## 6.2.0 (2017-10-21)
+
++ Pivotal commit option not also includes close issue
+
+
 <a name="6.1.0"></a>
 ## 6.1.0 (2017-10-19)
 
